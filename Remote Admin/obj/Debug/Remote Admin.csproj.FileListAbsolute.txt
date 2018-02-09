@@ -1,0 +1,9 @@
+c:\users\евгений\documents\visual studio 2015\Projects\Remote Admin\Remote Admin\bin\Debug\Remote Admin.exe
+c:\users\евгений\documents\visual studio 2015\Projects\Remote Admin\Remote Admin\bin\Debug\Remote Admin.pdb
+c:\users\евгений\documents\visual studio 2015\Projects\Remote Admin\Remote Admin\obj\Debug\Remote Admin.csprojResolveAssemblyReference.cache
+c:\users\евгений\documents\visual studio 2015\Projects\Remote Admin\Remote Admin\obj\Debug\Remote_Admin.RemAdmForm.resources
+c:\users\евгений\documents\visual studio 2015\Projects\Remote Admin\Remote Admin\obj\Debug\Remote_Admin.Properties.Resources.resources
+c:\users\евгений\documents\visual studio 2015\Projects\Remote Admin\Remote Admin\obj\Debug\Remote Admin.csproj.GenerateResource.Cache
+c:\users\евгений\documents\visual studio 2015\Projects\Remote Admin\Remote Admin\obj\Debug\Remote Admin.exe
+c:\users\евгений\documents\visual studio 2015\Projects\Remote Admin\Remote Admin\obj\Debug\Remote Admin.pdb
+c:\users\евгений\documents\visual studio 2015\Projects\Remote Admin\Remote Admin\obj\Debug\Remote_Admin.ServerForm.resources
