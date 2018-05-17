@@ -7,3 +7,14 @@ c:\users\евгений\documents\visual studio 2015\Projects\Remote Admin\Remot
 c:\users\евгений\documents\visual studio 2015\Projects\Remote Admin\Remote Admin\obj\Debug\Remote Admin.exe
 c:\users\евгений\documents\visual studio 2015\Projects\Remote Admin\Remote Admin\obj\Debug\Remote Admin.pdb
 c:\users\евгений\documents\visual studio 2015\Projects\Remote Admin\Remote Admin\obj\Debug\Remote_Admin.ServerForm.resources
+D:\HLAM\Projects\Remote Admin\Remote Admin\obj\Debug\Remote Admin.exe
+D:\HLAM\Projects\Remote Admin\Remote Admin\obj\Debug\Remote Admin.pdb
+D:\HLAM\Projects\Remote Admin\Remote Admin\obj\Debug\Remote Admin.csprojResolveAssemblyReference.cache
+D:\HLAM\Projects\Remote Admin\Remote Admin\obj\Debug\Remote_Admin.MainWindow.resources
+D:\HLAM\Projects\Remote Admin\Remote Admin\obj\Debug\Remote_Admin.Properties.Resources.resources
+D:\HLAM\Projects\Remote Admin\Remote Admin\obj\Debug\Remote_Admin.ServerForm.resources
+D:\HLAM\Projects\Remote Admin\Remote Admin\obj\Debug\Remote Admin.csproj.GenerateResource.Cache
+D:\HLAM\Projects\Remote Admin\Remote Admin\bin\Debug\Remote Admin.exe.config
+D:\HLAM\Projects\Remote Admin\Remote Admin\bin\Debug\Remote Admin.exe
+D:\HLAM\Projects\Remote Admin\Remote Admin\bin\Debug\Remote Admin.pdb
+D:\HLAM\Projects\Remote Admin\Remote Admin\bin\Debug\MaterialSkin.dll

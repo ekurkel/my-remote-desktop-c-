@@ -15,7 +15,7 @@ namespace Remote_Admin
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new RemAdmForm());
+            Application.Run(new MainWindow());
         }
     }
 }
