@@ -189,11 +189,7 @@ namespace Remote_Admin.Model
 
         private static void SendMyMessage(Socket socket)
         {
-            try
-            {
                 socket.Send(RawSerialize(data));
-            }
-            catch { }
         }
 
         public static void StopSendingScreen(Socket s)

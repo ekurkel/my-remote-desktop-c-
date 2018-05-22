@@ -72,7 +72,6 @@ namespace Remote_Admin.Model
                 Commands.StopSendingScreenEvent += StopSendingScreen;
 
                 return error;
-
             }
             catch
             {
@@ -110,7 +109,6 @@ namespace Remote_Admin.Model
                 isSending = true;
                 SendThread = new Thread(RunSend);
                 SendThread.Start(); //запускаем поток
-                SendThread.Join();
             }
         }
 
@@ -127,14 +125,13 @@ namespace Remote_Admin.Model
             return memoryStream.ToArray();
         }
 
-
         private void RunReceive()
         {
-            byte[] bytes = new byte[30];
             while (true)
             {
                 try
                 {
+                    byte[] bytes = new byte[50];
                     sockClient.Receive(bytes);
                     if (bytes[0] == 100)
                     {
