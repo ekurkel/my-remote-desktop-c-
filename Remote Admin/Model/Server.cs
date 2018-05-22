@@ -5,7 +5,7 @@ using System.Threading;
 
 namespace Remote_Admin.Model
 {
-    class Server
+    public class Server
     {
         public List<RemoteComputer> RemoteComputers { get; private set; }
         private Socket sListener;
@@ -16,6 +16,8 @@ namespace Remote_Admin.Model
         public Server()
         {
             RemoteComputers = new List<RemoteComputer>();
+
+            RemoteComputer.RemoteComputerConnectionCloseEvent += RemoteComputerConnectionClose;
             StartServer();
         }
 
@@ -34,16 +36,25 @@ namespace Remote_Admin.Model
 
         private void Run()
         {
-            byte[] name = new byte[30];
+            byte[] data = new byte[100];
+
             while (true)
             {
-                // Программа приостанавливается, ожидая входящее соединение
-                Socket handler = sListener.Accept();
-                int iRx = handler.Receive(name);
-                string recv = GetNameFromByte(name, iRx);
-                RemoteComputers.Add(new RemoteComputer(recv, handler));
+                try
+                {
+                    // Программа приостанавливается, ожидая входящее соединение
+                    Socket handler = sListener.Accept();
+                    int iRx = handler.Receive(data);
+                    string comp = GetNameFromByte(data, iRx);
+                    iRx = handler.Receive(data);
+                    string name = GetNameFromByte(data, iRx);
+                    iRx = handler.Receive(data);
+                    string ip = GetNameFromByte(data, iRx);
+                    RemoteComputers.Add(new RemoteComputer(comp, name, ip, handler));
 
-                RemoteComputersListHasChanged();
+                    RemoteComputersListHasChanged();
+                }
+                catch { }
             }
         }
 
@@ -54,6 +65,44 @@ namespace Remote_Admin.Model
             d.GetChars(_name, 0, _iRx, chars, 0);
 
             return new string(chars);
+        }
+
+        private void RemoteComputerConnectionClose(RemoteComputer r)
+        {
+            CloseConnections(RemoteComputers.IndexOf(r));
+        }
+
+        public void CloseConnections(int id)
+        {
+            try
+            {
+                RemoteComputers[id].clientSocket.Send(new byte [] {100});
+                RemoteComputers[id].clientSocket.Shutdown(SocketShutdown.Both);
+                RemoteComputers[id].clientSocket.Close();
+                RemoteComputers.RemoveAt(id);
+
+                
+            }
+            catch { }
+
+            RemoteComputersListHasChanged();
+        }
+
+        public void CloseAllConnections()
+        {
+            for (int i = 0; i < RemoteComputers.Count; i++)
+            {
+                CloseConnections(i);
+            }
+            RemoteComputers.Clear();
+            RemoteComputersListHasChanged();
+
+        }
+
+        public void CloseCloseAllConnectionsAndExit()
+        {
+            CloseAllConnections();
+            sListener.Dispose();
         }
     }
 }

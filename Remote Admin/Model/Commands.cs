@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace Remote_Admin.Model
@@ -14,9 +15,9 @@ namespace Remote_Admin.Model
     [StructLayout(LayoutKind.Sequential)]
     struct Data
     {
-        public int Button;
-        public int x;
-        public int y;
+        public int CommandType;
+        public int firstParam;
+        public int secondParam;
     }
 
     public static class Commands
@@ -35,55 +36,57 @@ namespace Remote_Admin.Model
         private const int MOUSEEVENTF_RIGHTUP = 0x0010;
         private const int MOUSEEVENTF_ABSOLUTE = 0x8000;
 
-        private const int MOUSE_MOVE = 0;
-        private const int MOUSE_LEFTDOWN = 1;
-        private const int MOUSE_RIGHTDOWN = 2;
-        private const int MOUSE_LEFTUP = 3;
-        private const int MOUSE_RIGHTUP = 4;
-        private const int KEYBOARD_DOWN = 5;
-        private const int KEYBOARD_UP = 6;
-        private const int MOUSE_WHEEL_ROTATED1 = 7;
-        private const int MOUSE_WHEEL_ROTATED2 = 8;
-        private const int RECIVE_FILE = 10;
+        public  delegate void SendingScreenDelegate();
+        public static event SendingScreenDelegate StopSendingScreenEvent;
+        public static event SendingScreenDelegate StartSendingScreenEvent;
 
-        public static void ExecuteCommand(byte[] commandBytes, string serverIP)
+        public static void ConnectToServer(Socket s, string comp, string name, string ip)
+        {
+            s.Send(System.Text.Encoding.ASCII.GetBytes(comp));
+            Thread.Sleep(30);
+            s.Send(System.Text.Encoding.UTF8.GetBytes(name));
+            Thread.Sleep(30);
+            s.Send(System.Text.Encoding.ASCII.GetBytes(ip));
+        }
+
+    public static void ExecuteCommand(byte[] commandBytes, string serverIP)
         {
             Data d = new Data();
 
-            d.Button = BitConverter.ToInt32(commandBytes, 0);
-            d.x = BitConverter.ToInt32(commandBytes, 4) * 65536 / Screen.PrimaryScreen.Bounds.Width;
-            d.y = BitConverter.ToInt32(commandBytes, 8) * 65536 / Screen.PrimaryScreen.Bounds.Height;
+            d.CommandType = BitConverter.ToInt32(commandBytes, 0);
+            d.firstParam = BitConverter.ToInt32(commandBytes, 4) * 65536 / Screen.PrimaryScreen.Bounds.Width;
+            d.secondParam = BitConverter.ToInt32(commandBytes, 8) * 65536 / Screen.PrimaryScreen.Bounds.Height;
 
-            switch (d.Button)
+            switch (d.CommandType)
             {
-                case MOUSE_MOVE:
-                    mouse_event((uint)(MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE | 0x2000), (uint)d.x, (uint)d.y, 0, 0);
+                case (int)NetworkCommands.MOUSE_MOVE:
+                    mouse_event((uint)(MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE | 0x2000), (uint)d.firstParam, (uint)d.secondParam, 0, 0);
                     break;
-                case 1:
-                    mouse_event((uint)(MOUSEEVENTF_LEFTDOWN | MOUSEEVENTF_ABSOLUTE), (uint)d.x, (uint)d.y, 0, 0);
+                case (int)NetworkCommands.MOUSE_LEFTDOWN:
+                    mouse_event((uint)(MOUSEEVENTF_LEFTDOWN | MOUSEEVENTF_ABSOLUTE), (uint)d.firstParam, (uint)d.secondParam, 0, 0);
                     break;
-                case 2:
-                    mouse_event((uint)(MOUSEEVENTF_RIGHTDOWN | MOUSEEVENTF_ABSOLUTE), (uint)d.x, (uint)d.y, 0, 0);
+                case (int)NetworkCommands.MOUSE_RIGHTDOWN:
+                    mouse_event((uint)(MOUSEEVENTF_RIGHTDOWN | MOUSEEVENTF_ABSOLUTE), (uint)d.firstParam, (uint)d.secondParam, 0, 0);
                     break;
-                case 3:
-                    mouse_event((uint)(MOUSEEVENTF_LEFTUP | MOUSEEVENTF_ABSOLUTE), (uint)d.x, (uint)d.y, 0, 0);
+                case (int)NetworkCommands.MOUSE_LEFTUP:
+                    mouse_event((uint)(MOUSEEVENTF_LEFTUP | MOUSEEVENTF_ABSOLUTE), (uint)d.firstParam, (uint)d.secondParam, 0, 0);
                     break;
-                case 4:
-                    mouse_event((uint)(MOUSEEVENTF_RIGHTUP | MOUSEEVENTF_ABSOLUTE), (uint)d.x, (uint)d.y, 0, 0);
+                case (int)NetworkCommands.MOUSE_RIGHTUP:
+                    mouse_event((uint)(MOUSEEVENTF_RIGHTUP | MOUSEEVENTF_ABSOLUTE), (uint)d.firstParam, (uint)d.secondParam, 0, 0);
                     break;
-                case 5:
+                case (int)NetworkCommands.KEYBOARD_DOWN:
                     keybd_event(commandBytes[4], commandBytes[8], 1 | 0, (UIntPtr)0);
                     break;
-                case 6:
+                case (int)NetworkCommands.KEYBOARD_UP:
                     keybd_event(commandBytes[4], commandBytes[8], 1 | 2, (UIntPtr)0);
                     break;
-                case 7:
+                case (int)NetworkCommands.MOUSE_WHEEL_ROTATED1:
                     mouse_event(0x0800, 0, 0, unchecked((uint)150), 0);
                     break;
-                case 8:
+                case (int)NetworkCommands.MOUSE_WHEEL_ROTATED2:
                     mouse_event(0x0800, 0, 0, unchecked((uint)-150), 0);
                     break;
-                case 10:
+                case (int)NetworkCommands.RECIVE_FILE:
                     {
                         try
                         {
@@ -98,7 +101,16 @@ namespace Remote_Admin.Model
                         { return; }
                     }
                     break;
-
+                case (int)NetworkCommands.STOP_SENDING:
+                    {
+                        StopSendingScreenEvent();
+                    }
+                    break;
+                case (int)NetworkCommands.START_SENDING:
+                    {
+                        StartSendingScreenEvent();
+                    }
+                    break;
             }
         }
 
@@ -184,52 +196,64 @@ namespace Remote_Admin.Model
             catch { }
         }
 
+        public static void StopSendingScreen(Socket s)
+        {
+            data.CommandType = (int)NetworkCommands.STOP_SENDING;
+            SendMyMessage(s);
+        }
+
+        public static void StartSendingScreen(Socket s)
+        {
+            data.CommandType = (int)NetworkCommands.START_SENDING;
+            SendMyMessage(s);
+        }
+
         public static void LeftMouseBtnClick(Socket s)
         {
-            data.Button = MOUSE_LEFTDOWN;
+            data.CommandType = (int)NetworkCommands.MOUSE_LEFTDOWN;
             SendMyMessage(s);
         }
 
         public static void RightMouseBtnClick(Socket s)
         {
-            data.Button = MOUSE_RIGHTDOWN;
+            data.CommandType = (int)NetworkCommands.MOUSE_RIGHTDOWN;
             SendMyMessage(s);
         }
 
         public static void MouseMove(Socket s, int x, int y)
         {
-            data.x = x;
-            data.y = y;
-            data.Button = MOUSE_MOVE;
+            data.firstParam = x;
+            data.secondParam = y;
+            data.CommandType = (int)NetworkCommands.MOUSE_MOVE;
             SendMyMessage(s);
         }
 
         public static void RightMouseBtnUp(Socket s)
         {
-            data.Button = MOUSE_RIGHTUP;
+            data.CommandType = (int)NetworkCommands.MOUSE_RIGHTUP;
             SendMyMessage(s);
         }
 
         public static void LeftMouseBtnUp(Socket s)
         {
-            data.Button = MOUSE_LEFTUP;
+            data.CommandType = (int)NetworkCommands.MOUSE_LEFTUP;
             SendMyMessage(s);
         }
 
         public static void KeyDown(Socket s, int keyValue, int keyCode)
         {
-            data.Button = 5;
-            data.x = keyValue;
-            data.y = keyCode;
+            data.CommandType = 5;
+            data.firstParam = keyValue;
+            data.secondParam = keyCode;
 
             SendMyMessage(s);
         }
 
         public static void KeyUp(Socket s, int keyValue, int keyCode)
         {
-            data.Button = 6;
-            data.x = keyValue;
-            data.y = keyCode;
+            data.CommandType = 6;
+            data.firstParam = keyValue;
+            data.secondParam = keyCode;
 
             SendMyMessage(s);
         }
@@ -237,9 +261,9 @@ namespace Remote_Admin.Model
         public static void MouseWheel(Socket s, int value)
         {
             if (value > 0)
-                data.Button = MOUSE_WHEEL_ROTATED1;
+                data.CommandType = (int)NetworkCommands.MOUSE_WHEEL_ROTATED1;
             else
-                data.Button = MOUSE_WHEEL_ROTATED2;
+                data.CommandType = (int)NetworkCommands.MOUSE_WHEEL_ROTATED2;
 
             SendMyMessage(s);
         }
@@ -249,7 +273,7 @@ namespace Remote_Admin.Model
             OpenFileDialog ofd = new OpenFileDialog();
             if (ofd.ShowDialog() == DialogResult.OK)
             {
-                data.Button = RECIVE_FILE;
+                data.CommandType = (int)NetworkCommands.RECIVE_FILE;
                 SendMyMessage(s);
 
                 //Создаем Listener на порт "по умолчанию"

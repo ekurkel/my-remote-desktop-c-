@@ -10,19 +10,25 @@ using System.Threading.Tasks;
 
 namespace Remote_Admin.Model
 {
-    class RemoteComputer
+     public class RemoteComputer
     {
-
+        public string ComputerUser { get; private set; }
+        public string ClientIP { get; private set; }
         public string ComputerName { get; private set; }
         public Bitmap ComputerScreen { get; private set; }
         public Socket clientSocket { get; private set; }
 
-    //  public delegate void RemoteComputerScreenChanged();
-    // public event RemoteComputerScreenChanged RemoteComputerScreenHasChanged;
 
-    public RemoteComputer(string _computerName, Socket _clientSocket)
+        public delegate void RemoteComputerScreenDelegate();
+        public delegate void RemoteComputerConnectionDelegate(RemoteComputer r);
+        public event RemoteComputerScreenDelegate RemoteComputerScreenHasChangedEvent;
+        public static event RemoteComputerConnectionDelegate RemoteComputerConnectionCloseEvent;
+
+        public RemoteComputer(string _computerName, string _computerUser, string _ip, Socket _clientSocket)
         {
             ComputerName = _computerName;
+            ComputerUser = _computerUser;
+            ClientIP = _ip;
             clientSocket = _clientSocket;
 
             Thread ReciveScreenImageThread = new Thread(ReciveScreenImage);
@@ -30,9 +36,9 @@ namespace Remote_Admin.Model
             ReciveScreenImageThread.Start(); //запускаем поток
         }
 
-        public void ReciveScreenImage()
+        private void ReciveScreenImage()
         {
-            byte[] bytes = new byte[10000];
+            byte[] bytes = new byte[10000000];
 
             while (true)
             {
@@ -46,11 +52,17 @@ namespace Remote_Admin.Model
                         ms.Seek(0, SeekOrigin.Begin);
                         ComputerScreen = (Bitmap)Bitmap.FromStream(ms);
                     }
-                    // RemoteComputerScreenHasChanged();
+                    RemoteComputerScreenHasChangedEvent();
                 }
-                catch { }
-
-
+                catch
+                {
+                    if(clientSocket.Connected == false)
+                    {
+                        clientSocket.Close();
+                        RemoteComputerConnectionCloseEvent(this);
+                        Thread.CurrentThread.Abort();
+                    }
+                }
             }
         }
     }

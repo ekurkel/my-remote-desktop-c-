@@ -3,6 +3,7 @@ using System.Drawing;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;
+using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -15,18 +16,17 @@ namespace Remote_Admin.Model
         private Thread ReceiveThread;
         private int width;
         private int height;
-        private string ip;
+        private string serverIp;
+        private bool isSending = false;
 
         public bool ConnectToServer(string IP)
         {
-            ip = IP;
+            serverIp = IP;
             if (LoadInfo()) // Загружаем данные и получаем размер экрана
             {
-                SendThread = new Thread(RunSend);
-                SendThread.Start(); //запускаем поток
                 ReceiveThread = new Thread(RunReceive);
                 ReceiveThread.Start(); //запускаем поток
-                SendThread.Join();
+                ReceiveThread.Join();
                 return true;
             }
             return false;
@@ -40,7 +40,7 @@ namespace Remote_Admin.Model
             try
             {
                 // Устанавливаем удаленную точку для сокета
-                IPHostEntry ipHost = Dns.GetHostEntry(ip);
+                IPHostEntry ipHost = Dns.GetHostEntry(serverIp);
 
                 foreach (var address in ipHost.AddressList)
                 {
@@ -52,19 +52,27 @@ namespace Remote_Admin.Model
                         if (tempSocket.Connected)
                         {
                             sockClient = tempSocket;
-                            sockClient.Send(System.Text.Encoding.ASCII.GetBytes(Environment.MachineName));
+
+                            Commands.ConnectToServer(sockClient, Environment.MachineName,
+                                Environment.UserName,
+                                Dns.GetHostByName(Environment.MachineName).AddressList[0].ToString());
+                            //MessageBox.Show("The connection to the Server was successful!", "Server Connection Status", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             error = true;
-                            ip = address.ToString();
+                            serverIp = address.ToString();
                             break;
                         }
                     }
-                    catch (Exception) { }
+                    catch (System.Net.Sockets.SocketException e) { }
                 }
 
                 width = Screen.PrimaryScreen.Bounds.Width;
                 height = Screen.PrimaryScreen.Bounds.Height;
 
+                Commands.StartSendingScreenEvent += StartSendingScreen;
+                Commands.StopSendingScreenEvent += StopSendingScreen;
+
                 return error;
+
             }
             catch
             {
@@ -72,13 +80,13 @@ namespace Remote_Admin.Model
             }
         }
 
+
         private void RunSend()
         {
-
             Bitmap BackGround = new Bitmap(width, height);
             Graphics graphics = Graphics.FromImage(BackGround);
 
-            while (true)
+            while (isSending)
             {
                 // Получаем снимок экрана
                 graphics.CopyFromScreen(0, 0, 0, 0, new Size(width, height));
@@ -90,9 +98,26 @@ namespace Remote_Admin.Model
                     // Отправляем картинку клиенту
                     sockClient.Send(bytes, bytes.Length, 0);
                 }
-                catch (Exception) { sockClient.Close(); return; }
+                catch (Exception) { sockClient.Close(); Thread.CurrentThread.Abort(); }
                 Thread.Sleep(10);
             }
+        }
+
+        private void StartSendingScreen()
+        {
+            if (!isSending)
+            {
+                isSending = true;
+                SendThread = new Thread(RunSend);
+                SendThread.Start(); //запускаем поток
+                SendThread.Join();
+            }
+        }
+
+        private void StopSendingScreen()
+        {
+            isSending = false;
+            SendThread.Abort();
         }
 
         private byte[] ConvertToByte(Bitmap bmp)
@@ -106,20 +131,23 @@ namespace Remote_Admin.Model
         private void RunReceive()
         {
             byte[] bytes = new byte[30];
-           // Data d = new Data();
-
             while (true)
             {
                 try
                 {
                     sockClient.Receive(bytes);
-                    Commands.ExecuteCommand(bytes, ip);
+                    if (bytes[0] == 100)
+                    {
+                        StopSendingScreen();
+                        ReceiveThread.Abort();
+                    }
+                    Commands.ExecuteCommand(bytes, serverIp);
                 }
                 catch
                 {
-                        sockClient.Shutdown(SocketShutdown.Both);
-                        sockClient.Close();
-                        return;
+                    isSending = false;
+                    ReceiveThread.Abort();
+                    return;
                 }
             }
         }

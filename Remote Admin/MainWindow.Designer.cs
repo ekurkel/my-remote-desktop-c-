@@ -28,171 +28,161 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.clientBox = new System.Windows.Forms.GroupBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.textBoxIP = new System.Windows.Forms.TextBox();
-            this.bConnect = new System.Windows.Forms.Button();
-            this.serverBox = new System.Windows.Forms.GroupBox();
-            this.bServStart = new System.Windows.Forms.Button();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.clientBox.SuspendLayout();
-            this.serverBox.SuspendLayout();
+            this.textBoxIP = new MaterialSkin.Controls.MaterialSingleLineTextField();
+            this.materialRaisedButton1 = new MaterialSkin.Controls.MaterialRaisedButton();
+            this.materialRaisedButton2 = new MaterialSkin.Controls.MaterialRaisedButton();
+            this.materialDivider1 = new MaterialSkin.Controls.MaterialDivider();
+            this.materialLabel1 = new MaterialSkin.Controls.MaterialLabel();
+            this.materialLabel3 = new MaterialSkin.Controls.MaterialLabel();
+            this.materialLabel4 = new MaterialSkin.Controls.MaterialLabel();
+            this.label5 = new MaterialSkin.Controls.MaterialLabel();
+            this.label6 = new MaterialSkin.Controls.MaterialLabel();
             this.SuspendLayout();
-            // 
-            // clientBox
-            // 
-            this.clientBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
-            this.clientBox.Controls.Add(this.label1);
-            this.clientBox.Controls.Add(this.label2);
-            this.clientBox.Controls.Add(this.textBoxIP);
-            this.clientBox.Controls.Add(this.bConnect);
-            this.clientBox.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.clientBox.Location = new System.Drawing.Point(3, 67);
-            this.clientBox.Name = "clientBox";
-            this.clientBox.Size = new System.Drawing.Size(168, 141);
-            this.clientBox.TabIndex = 0;
-            this.clientBox.TabStop = false;
-            this.clientBox.Text = "Client";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label1.Location = new System.Drawing.Point(30, 64);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(120, 16);
-            this.label1.TabIndex = 5;
-            this.label1.Text = " (or computer name)";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label2.Location = new System.Drawing.Point(30, 22);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(108, 17);
-            this.label2.TabIndex = 4;
-            this.label2.Text = "Enter IP-address";
             // 
             // textBoxIP
             // 
-            this.textBoxIP.Location = new System.Drawing.Point(9, 41);
+            this.textBoxIP.Depth = 0;
+            this.textBoxIP.Hint = "192.168.23.125";
+            this.textBoxIP.Location = new System.Drawing.Point(137, 85);
+            this.textBoxIP.MouseState = MaterialSkin.MouseState.HOVER;
             this.textBoxIP.Name = "textBoxIP";
-            this.textBoxIP.Size = new System.Drawing.Size(153, 21);
-            this.textBoxIP.TabIndex = 2;
+            this.textBoxIP.Size = new System.Drawing.Size(146, 23);
+            this.textBoxIP.TabIndex = 6;
             // 
-            // bConnect
+            // materialRaisedButton1
             // 
-            this.bConnect.Location = new System.Drawing.Point(6, 85);
-            this.bConnect.Name = "bConnect";
-            this.bConnect.Size = new System.Drawing.Size(156, 46);
-            this.bConnect.TabIndex = 0;
-            this.bConnect.Text = "Connect";
-            this.bConnect.UseVisualStyleBackColor = true;
-            this.bConnect.Click += new System.EventHandler(this.bConnect_Click);
+            this.materialRaisedButton1.Depth = 0;
+            this.materialRaisedButton1.Location = new System.Drawing.Point(174, 115);
+            this.materialRaisedButton1.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialRaisedButton1.Name = "materialRaisedButton1";
+            this.materialRaisedButton1.Primary = true;
+            this.materialRaisedButton1.Size = new System.Drawing.Size(109, 40);
+            this.materialRaisedButton1.TabIndex = 7;
+            this.materialRaisedButton1.Text = "Connect";
+            this.materialRaisedButton1.UseVisualStyleBackColor = true;
+            this.materialRaisedButton1.Click += new System.EventHandler(this.bConnect_Click);
             // 
-            // serverBox
+            // materialRaisedButton2
             // 
-            this.serverBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.serverBox.Controls.Add(this.bServStart);
-            this.serverBox.Controls.Add(this.label6);
-            this.serverBox.Controls.Add(this.label5);
-            this.serverBox.Controls.Add(this.label4);
-            this.serverBox.Controls.Add(this.label3);
-            this.serverBox.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.serverBox.Location = new System.Drawing.Point(177, 67);
-            this.serverBox.Name = "serverBox";
-            this.serverBox.Size = new System.Drawing.Size(213, 141);
-            this.serverBox.TabIndex = 1;
-            this.serverBox.TabStop = false;
-            this.serverBox.Text = "Server";
+            this.materialRaisedButton2.Depth = 0;
+            this.materialRaisedButton2.Location = new System.Drawing.Point(174, 241);
+            this.materialRaisedButton2.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialRaisedButton2.Name = "materialRaisedButton2";
+            this.materialRaisedButton2.Primary = true;
+            this.materialRaisedButton2.Size = new System.Drawing.Size(109, 40);
+            this.materialRaisedButton2.TabIndex = 5;
+            this.materialRaisedButton2.Text = "Start Server";
+            this.materialRaisedButton2.UseVisualStyleBackColor = true;
+            this.materialRaisedButton2.Click += new System.EventHandler(this.bServStart_Click);
             // 
-            // bServStart
+            // materialDivider1
             // 
-            this.bServStart.Location = new System.Drawing.Point(57, 85);
-            this.bServStart.Name = "bServStart";
-            this.bServStart.Size = new System.Drawing.Size(95, 46);
-            this.bServStart.TabIndex = 5;
-            this.bServStart.Text = "Server Start";
-            this.bServStart.UseVisualStyleBackColor = true;
-            this.bServStart.Click += new System.EventHandler(this.bServStart_Click);
+            this.materialDivider1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.materialDivider1.Depth = 0;
+            this.materialDivider1.Location = new System.Drawing.Point(10, 167);
+            this.materialDivider1.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialDivider1.Name = "materialDivider1";
+            this.materialDivider1.Size = new System.Drawing.Size(294, 1);
+            this.materialDivider1.TabIndex = 8;
             // 
-            // label6
+            // materialLabel1
             // 
-            this.label6.AutoSize = true;
-            this.label6.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label6.Location = new System.Drawing.Point(82, 45);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(47, 17);
-            this.label6.TabIndex = 4;
-            this.label6.Text = "label6";
+            this.materialLabel1.AutoSize = true;
+            this.materialLabel1.Depth = 0;
+            this.materialLabel1.Font = new System.Drawing.Font("Roboto", 11F);
+            this.materialLabel1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.materialLabel1.Location = new System.Drawing.Point(9, 85);
+            this.materialLabel1.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialLabel1.Name = "materialLabel1";
+            this.materialLabel1.Size = new System.Drawing.Size(122, 19);
+            this.materialLabel1.TabIndex = 9;
+            this.materialLabel1.Text = "Enter IP-address:";
+            // 
+            // materialLabel3
+            // 
+            this.materialLabel3.AutoSize = true;
+            this.materialLabel3.Depth = 0;
+            this.materialLabel3.Font = new System.Drawing.Font("Roboto", 11F);
+            this.materialLabel3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.materialLabel3.Location = new System.Drawing.Point(11, 181);
+            this.materialLabel3.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialLabel3.Name = "materialLabel3";
+            this.materialLabel3.Size = new System.Drawing.Size(120, 19);
+            this.materialLabel3.TabIndex = 11;
+            this.materialLabel3.Text = "Computer name:";
+            // 
+            // materialLabel4
+            // 
+            this.materialLabel4.AutoSize = true;
+            this.materialLabel4.Depth = 0;
+            this.materialLabel4.Font = new System.Drawing.Font("Roboto", 11F);
+            this.materialLabel4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.materialLabel4.Location = new System.Drawing.Point(12, 207);
+            this.materialLabel4.MouseState = MaterialSkin.MouseState.HOVER;
+            this.materialLabel4.Name = "materialLabel4";
+            this.materialLabel4.Size = new System.Drawing.Size(86, 19);
+            this.materialLabel4.TabIndex = 12;
+            this.materialLabel4.Text = "Ip-address: ";
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label5.Location = new System.Drawing.Point(124, 22);
+            this.label5.Depth = 0;
+            this.label5.Font = new System.Drawing.Font("Roboto", 11F);
+            this.label5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.label5.Location = new System.Drawing.Point(128, 181);
+            this.label5.MouseState = MaterialSkin.MouseState.HOVER;
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(73, 17);
-            this.label5.TabIndex = 3;
-            this.label5.Text = "aasscacw";
+            this.label5.Size = new System.Drawing.Size(108, 19);
+            this.label5.TabIndex = 13;
+            this.label5.Text = "materialLabel5";
             // 
-            // label4
+            // label6
             // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label4.Location = new System.Drawing.Point(6, 45);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(81, 17);
-            this.label4.TabIndex = 2;
-            this.label4.Text = "Ip-address: ";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label3.Location = new System.Drawing.Point(6, 22);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(121, 17);
-            this.label3.TabIndex = 1;
-            this.label3.Text = "Computer name:";
+            this.label6.AutoSize = true;
+            this.label6.Depth = 0;
+            this.label6.Font = new System.Drawing.Font("Roboto", 11F);
+            this.label6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.label6.Location = new System.Drawing.Point(91, 207);
+            this.label6.MouseState = MaterialSkin.MouseState.HOVER;
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(108, 19);
+            this.label6.TabIndex = 14;
+            this.label6.Text = "materialLabel6";
             // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(394, 208);
-            this.Controls.Add(this.serverBox);
-            this.Controls.Add(this.clientBox);
+            this.ClientSize = new System.Drawing.Size(302, 299);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.materialLabel4);
+            this.Controls.Add(this.materialLabel3);
+            this.Controls.Add(this.materialLabel1);
+            this.Controls.Add(this.materialDivider1);
+            this.Controls.Add(this.materialRaisedButton2);
+            this.Controls.Add(this.materialRaisedButton1);
+            this.Controls.Add(this.textBoxIP);
+            this.MaximizeBox = false;
             this.Name = "MainWindow";
+            this.Sizable = false;
             this.Text = "Remote Admin";
-            this.clientBox.ResumeLayout(false);
-            this.clientBox.PerformLayout();
-            this.serverBox.ResumeLayout(false);
-            this.serverBox.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.GroupBox clientBox;
-        private System.Windows.Forms.GroupBox serverBox;
-        private System.Windows.Forms.Button bConnect;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox textBoxIP;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Button bServStart;
+        private MaterialSkin.Controls.MaterialSingleLineTextField textBoxIP;
+        private MaterialSkin.Controls.MaterialRaisedButton materialRaisedButton1;
+        private MaterialSkin.Controls.MaterialRaisedButton materialRaisedButton2;
+        private MaterialSkin.Controls.MaterialDivider materialDivider1;
+        private MaterialSkin.Controls.MaterialLabel materialLabel1;
+        private MaterialSkin.Controls.MaterialLabel materialLabel3;
+        private MaterialSkin.Controls.MaterialLabel materialLabel4;
+        private MaterialSkin.Controls.MaterialLabel label5;
+        private MaterialSkin.Controls.MaterialLabel label6;
     }
 }
 
