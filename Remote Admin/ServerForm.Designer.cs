@@ -44,12 +44,11 @@
             this.materialLabel2 = new MaterialSkin.Controls.MaterialLabel();
             this.Label6 = new MaterialSkin.Controls.MaterialLabel();
             this.Label7 = new MaterialSkin.Controls.MaterialLabel();
-            this.materialRaisedButton1 = new MaterialSkin.Controls.MaterialRaisedButton();
-            this.materialRaisedButton2 = new MaterialSkin.Controls.MaterialRaisedButton();
-            this.materialRaisedButton3 = new MaterialSkin.Controls.MaterialRaisedButton();
-            this.materialRaisedButton4 = new MaterialSkin.Controls.MaterialRaisedButton();
-            this.materialRaisedButton5 = new MaterialSkin.Controls.MaterialRaisedButton();
+            this.SendToAllButton = new MaterialSkin.Controls.MaterialRaisedButton();
+            this.RunAtAllButton = new MaterialSkin.Controls.MaterialRaisedButton();
+            this.CloseAllConnectionsButton = new MaterialSkin.Controls.MaterialRaisedButton();
             this.materialDivider1 = new MaterialSkin.Controls.MaterialDivider();
+            this.runFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -111,9 +110,10 @@
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.remoteDesctopToolStripMenuItem,
             this.sendFileToolStripMenuItem,
+            this.runFileToolStripMenuItem,
             this.disconnectToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(162, 92);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(162, 114);
             // 
             // remoteDesctopToolStripMenuItem
             // 
@@ -188,66 +188,44 @@
             this.Label7.TabIndex = 23;
             this.Label7.Text = "materialLabel4";
             // 
-            // materialRaisedButton1
+            // SendToAllButton
             // 
-            this.materialRaisedButton1.Depth = 0;
-            this.materialRaisedButton1.Location = new System.Drawing.Point(11, 170);
-            this.materialRaisedButton1.MouseState = MaterialSkin.MouseState.HOVER;
-            this.materialRaisedButton1.Name = "materialRaisedButton1";
-            this.materialRaisedButton1.Primary = true;
-            this.materialRaisedButton1.Size = new System.Drawing.Size(116, 31);
-            this.materialRaisedButton1.TabIndex = 24;
-            this.materialRaisedButton1.Text = "Send file to...";
-            this.materialRaisedButton1.UseVisualStyleBackColor = true;
+            this.SendToAllButton.Depth = 0;
+            this.SendToAllButton.Location = new System.Drawing.Point(12, 170);
+            this.SendToAllButton.MouseState = MaterialSkin.MouseState.HOVER;
+            this.SendToAllButton.Name = "SendToAllButton";
+            this.SendToAllButton.Primary = true;
+            this.SendToAllButton.Size = new System.Drawing.Size(115, 31);
+            this.SendToAllButton.TabIndex = 26;
+            this.SendToAllButton.Text = "Send to all ";
+            this.SendToAllButton.UseVisualStyleBackColor = true;
+            this.SendToAllButton.Click += new System.EventHandler(this.SendToAllButton_Click);
             // 
-            // materialRaisedButton2
+            // RunAtAllButton
             // 
-            this.materialRaisedButton2.Depth = 0;
-            this.materialRaisedButton2.Location = new System.Drawing.Point(12, 244);
-            this.materialRaisedButton2.MouseState = MaterialSkin.MouseState.HOVER;
-            this.materialRaisedButton2.Name = "materialRaisedButton2";
-            this.materialRaisedButton2.Primary = true;
-            this.materialRaisedButton2.Size = new System.Drawing.Size(115, 31);
-            this.materialRaisedButton2.TabIndex = 25;
-            this.materialRaisedButton2.Text = "Run file on...";
-            this.materialRaisedButton2.UseVisualStyleBackColor = true;
+            this.RunAtAllButton.Depth = 0;
+            this.RunAtAllButton.Location = new System.Drawing.Point(12, 207);
+            this.RunAtAllButton.MouseState = MaterialSkin.MouseState.HOVER;
+            this.RunAtAllButton.Name = "RunAtAllButton";
+            this.RunAtAllButton.Primary = true;
+            this.RunAtAllButton.Size = new System.Drawing.Size(115, 31);
+            this.RunAtAllButton.TabIndex = 27;
+            this.RunAtAllButton.Text = "Run at all";
+            this.RunAtAllButton.UseVisualStyleBackColor = true;
+            this.RunAtAllButton.Click += new System.EventHandler(this.RunAtAllButton_Click);
             // 
-            // materialRaisedButton3
+            // CloseAllConnectionsButton
             // 
-            this.materialRaisedButton3.Depth = 0;
-            this.materialRaisedButton3.Location = new System.Drawing.Point(12, 207);
-            this.materialRaisedButton3.MouseState = MaterialSkin.MouseState.HOVER;
-            this.materialRaisedButton3.Name = "materialRaisedButton3";
-            this.materialRaisedButton3.Primary = true;
-            this.materialRaisedButton3.Size = new System.Drawing.Size(115, 31);
-            this.materialRaisedButton3.TabIndex = 26;
-            this.materialRaisedButton3.Text = "Send to all ";
-            this.materialRaisedButton3.UseVisualStyleBackColor = true;
-            // 
-            // materialRaisedButton4
-            // 
-            this.materialRaisedButton4.Depth = 0;
-            this.materialRaisedButton4.Location = new System.Drawing.Point(12, 281);
-            this.materialRaisedButton4.MouseState = MaterialSkin.MouseState.HOVER;
-            this.materialRaisedButton4.Name = "materialRaisedButton4";
-            this.materialRaisedButton4.Primary = true;
-            this.materialRaisedButton4.Size = new System.Drawing.Size(115, 31);
-            this.materialRaisedButton4.TabIndex = 27;
-            this.materialRaisedButton4.Text = "Run at all";
-            this.materialRaisedButton4.UseVisualStyleBackColor = true;
-            // 
-            // materialRaisedButton5
-            // 
-            this.materialRaisedButton5.Depth = 0;
-            this.materialRaisedButton5.Location = new System.Drawing.Point(11, 315);
-            this.materialRaisedButton5.MouseState = MaterialSkin.MouseState.HOVER;
-            this.materialRaisedButton5.Name = "materialRaisedButton5";
-            this.materialRaisedButton5.Primary = true;
-            this.materialRaisedButton5.Size = new System.Drawing.Size(116, 39);
-            this.materialRaisedButton5.TabIndex = 28;
-            this.materialRaisedButton5.Text = "Close all connection";
-            this.materialRaisedButton5.UseVisualStyleBackColor = true;
-            this.materialRaisedButton5.Click += new System.EventHandler(this.closeAllConnectionsButton_Click);
+            this.CloseAllConnectionsButton.Depth = 0;
+            this.CloseAllConnectionsButton.Location = new System.Drawing.Point(12, 310);
+            this.CloseAllConnectionsButton.MouseState = MaterialSkin.MouseState.HOVER;
+            this.CloseAllConnectionsButton.Name = "CloseAllConnectionsButton";
+            this.CloseAllConnectionsButton.Primary = true;
+            this.CloseAllConnectionsButton.Size = new System.Drawing.Size(115, 39);
+            this.CloseAllConnectionsButton.TabIndex = 28;
+            this.CloseAllConnectionsButton.Text = "Close all connections";
+            this.CloseAllConnectionsButton.UseVisualStyleBackColor = true;
+            this.CloseAllConnectionsButton.Click += new System.EventHandler(this.closeAllConnectionsButton_Click);
             // 
             // materialDivider1
             // 
@@ -260,17 +238,22 @@
             this.materialDivider1.TabIndex = 29;
             this.materialDivider1.Text = "materialDivider1";
             // 
+            // runFileToolStripMenuItem
+            // 
+            this.runFileToolStripMenuItem.Name = "runFileToolStripMenuItem";
+            this.runFileToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
+            this.runFileToolStripMenuItem.Text = "Run file";
+            this.runFileToolStripMenuItem.Click += new System.EventHandler(this.runFileToolStripMenuItem_Click);
+            // 
             // ServerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(652, 361);
             this.Controls.Add(this.materialDivider1);
-            this.Controls.Add(this.materialRaisedButton5);
-            this.Controls.Add(this.materialRaisedButton4);
-            this.Controls.Add(this.materialRaisedButton3);
-            this.Controls.Add(this.materialRaisedButton2);
-            this.Controls.Add(this.materialRaisedButton1);
+            this.Controls.Add(this.CloseAllConnectionsButton);
+            this.Controls.Add(this.RunAtAllButton);
+            this.Controls.Add(this.SendToAllButton);
             this.Controls.Add(this.Label7);
             this.Controls.Add(this.Label6);
             this.Controls.Add(this.materialLabel2);
@@ -298,16 +281,15 @@
         private MaterialSkin.Controls.MaterialLabel materialLabel2;
         private MaterialSkin.Controls.MaterialLabel Label6;
         private MaterialSkin.Controls.MaterialLabel Label7;
-        private MaterialSkin.Controls.MaterialRaisedButton materialRaisedButton1;
-        private MaterialSkin.Controls.MaterialRaisedButton materialRaisedButton2;
-        private MaterialSkin.Controls.MaterialRaisedButton materialRaisedButton3;
-        private MaterialSkin.Controls.MaterialRaisedButton materialRaisedButton4;
-        private MaterialSkin.Controls.MaterialRaisedButton materialRaisedButton5;
+        private MaterialSkin.Controls.MaterialRaisedButton SendToAllButton;
+        private MaterialSkin.Controls.MaterialRaisedButton RunAtAllButton;
+        private MaterialSkin.Controls.MaterialRaisedButton CloseAllConnectionsButton;
         private MaterialSkin.Controls.MaterialDivider materialDivider1;
         private System.Windows.Forms.ColumnHeader IP;
         private System.Windows.Forms.ToolStripMenuItem disconnectToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem sendFileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem remoteDesctopToolStripMenuItem;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem runFileToolStripMenuItem;
     }
 }

@@ -45,26 +45,17 @@ namespace Remote_Admin.Model
                     // Программа приостанавливается, ожидая входящее соединение
                     Socket handler = sListener.Accept();
                     int iRx = handler.Receive(data);
-                    string comp = GetNameFromByte(data, iRx);
+                    string comp = Commands.GetNameFromByte(data, iRx);
                     iRx = handler.Receive(data);
-                    string name = GetNameFromByte(data, iRx);
+                    string name = Commands.GetNameFromByte(data, iRx);
                     iRx = handler.Receive(data);
-                    string ip = GetNameFromByte(data, iRx);
+                    string ip = Commands.GetNameFromByte(data, iRx);
                     RemoteComputers.Add(new RemoteComputer(comp, name, ip, handler));
 
                     RemoteComputersListHasChanged();
                 }
                 catch { }
             }
-        }
-
-        private string GetNameFromByte(byte[] _name, int _iRx)
-        {
-            System.Text.Decoder d = System.Text.Encoding.UTF8.GetDecoder();
-            char[] chars = new char[_iRx];
-            d.GetChars(_name, 0, _iRx, chars, 0);
-
-            return new string(chars);
         }
 
         private void RemoteComputerConnectionClose(RemoteComputer r)

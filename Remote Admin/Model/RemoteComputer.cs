@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
+﻿using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Net.Sockets;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace Remote_Admin.Model
 {
-     public class RemoteComputer
+    public class RemoteComputer
     {
         public string ComputerUser { get; private set; }
         public string ClientIP { get; private set; }
@@ -56,12 +51,13 @@ namespace Remote_Admin.Model
                 }
                 catch
                 {
-                    if(clientSocket.Connected == false)
+                    if (clientSocket.Connected == false)
                     {
                         clientSocket.Close();
                         RemoteComputerConnectionCloseEvent(this);
                         Thread.CurrentThread.Abort();
                     }
+                     
                 }
             }
         }

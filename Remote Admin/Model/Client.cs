@@ -62,7 +62,7 @@ namespace Remote_Admin.Model
                             break;
                         }
                     }
-                    catch (System.Net.Sockets.SocketException e) { }
+                    catch (SocketException e) { }
                 }
 
                 width = Screen.PrimaryScreen.Bounds.Width;
@@ -97,7 +97,10 @@ namespace Remote_Admin.Model
                     // Отправляем картинку клиенту
                     sockClient.Send(bytes, bytes.Length, 0);
                 }
-                catch (Exception) { sockClient.Close(); Thread.CurrentThread.Abort(); }
+                catch
+                {
+                    Thread.CurrentThread.Abort();
+                }
                 Thread.Sleep(10);
             }
         }
@@ -127,20 +130,21 @@ namespace Remote_Admin.Model
 
         private void RunReceive()
         {
+            byte[] bytes = new byte[300];
             while (true)
             {
                 try
                 {
-                    byte[] bytes = new byte[50];
-                    sockClient.Receive(bytes);
+                    
+                   int length = sockClient.Receive(bytes);
                     if (bytes[0] == 100)
                     {
                         StopSendingScreen();
                         ReceiveThread.Abort();
                     }
-                    Commands.ExecuteCommand(bytes, serverIp);
+                    Commands.ExecuteCommand(bytes, length, serverIp);
                 }
-                catch
+                catch (Exception e)
                 {
                     isSending = false;
                     ReceiveThread.Abort();
@@ -148,5 +152,7 @@ namespace Remote_Admin.Model
                 }
             }
         }
+
+
     }
 }
