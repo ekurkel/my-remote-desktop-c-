@@ -1,0 +1,12 @@
+D:\HLAM\Projects\Remote Admin\Remote Admin\bin\Release\Remote Admin.exe.config
+D:\HLAM\Projects\Remote Admin\Remote Admin\bin\Release\Remote Admin.exe
+D:\HLAM\Projects\Remote Admin\Remote Admin\bin\Release\Remote Admin.pdb
+D:\HLAM\Projects\Remote Admin\Remote Admin\bin\Release\MaterialSkin.dll
+D:\HLAM\Projects\Remote Admin\Remote Admin\obj\Release\Remote_Admin.MainWindow.resources
+D:\HLAM\Projects\Remote Admin\Remote Admin\obj\Release\Remote_Admin.Properties.Resources.resources
+D:\HLAM\Projects\Remote Admin\Remote Admin\obj\Release\Remote_Admin.RemoteDesctopForm.resources
+D:\HLAM\Projects\Remote Admin\Remote Admin\obj\Release\Remote_Admin.ServerForm.resources
+D:\HLAM\Projects\Remote Admin\Remote Admin\obj\Release\Remote Admin.csproj.GenerateResource.Cache
+D:\HLAM\Projects\Remote Admin\Remote Admin\obj\Release\Remote Admin.exe
+D:\HLAM\Projects\Remote Admin\Remote Admin\obj\Release\Remote Admin.pdb
+D:\HLAM\Projects\Remote Admin\Remote Admin\obj\Release\Remote Admin.csprojResolveAssemblyReference.cache
