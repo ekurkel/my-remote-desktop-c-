@@ -9,7 +9,7 @@ namespace Remote_Admin
 {
     public partial class ServerForm : MaterialForm
     {
-        public Server server { get; private set; }
+        private Server server;
 
         public ServerForm()
         {
