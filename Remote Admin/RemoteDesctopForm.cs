@@ -1,12 +1,5 @@
 ﻿using Remote_Admin.Model;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Remote_Admin
@@ -23,7 +16,7 @@ namespace Remote_Admin
 
             clientComp.RemoteComputerScreenHasChangedEvent += Drow;
 
-            Commands.StartSendingScreen(clientComp.clientSocket);
+            clientComp.SendMessage(new Model.CommandMessage(NetworkCommands.START_SENDING));
         }
 
         private void Drow()
@@ -61,38 +54,38 @@ namespace Remote_Admin
             double x = e.X * koef;
             double y = e.Y * koef;
 
-            Commands.MouseMove(clientComp.clientSocket, (int)x, (int)y);
+           clientComp.SendMessage(new CommandMessage(NetworkCommands.MOUSE_MOVE, (int)x, (int)y));
         }
 
         private void picScreen_MouseClick(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
-                Commands.LeftMouseBtnClick(clientComp.clientSocket);
+                clientComp.SendMessage(new CommandMessage(NetworkCommands.MOUSE_LEFTDOWN, (int)(e.X * koef), (int)(e.Y * koef)));
             else if (e.Button == MouseButtons.Right)
-                Commands.RightMouseBtnClick(clientComp.clientSocket);
+                clientComp.SendMessage(new CommandMessage(NetworkCommands.MOUSE_RIGHTDOWN, (int)(e.X * koef), (int)(e.Y * koef)));
         }
 
         private void picScreen_MouseUp(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
-                Commands.LeftMouseBtnUp(clientComp.clientSocket);
+                clientComp.SendMessage(new CommandMessage(NetworkCommands.MOUSE_LEFTUP, (int)(e.X * koef), (int)(e.Y * koef)));
             else if (e.Button == MouseButtons.Right)
-                Commands.RightMouseBtnUp(clientComp.clientSocket);
+                clientComp.SendMessage(new CommandMessage(NetworkCommands.MOUSE_RIGHTUP, (int)(e.X * koef), (int)(e.Y * koef)));
         }
 
         private void ServForm_KeyDown(object sender, KeyEventArgs e)
         {
-            Commands.KeyDown(clientComp.clientSocket, e.KeyValue, (int)e.KeyCode);
+            clientComp.SendMessage(new CommandMessage(NetworkCommands.KEYBOARD_DOWN, e.KeyValue, (int)e.KeyCode));
         }
 
         private void ServForm_KeyUp(object sender, KeyEventArgs e)
         {
-            Commands.KeyUp(clientComp.clientSocket, e.KeyValue, (int)e.KeyCode);
+            clientComp.SendMessage(new CommandMessage(NetworkCommands.KEYBOARD_UP, e.KeyValue, (int)e.KeyCode));
         }
 
         private void this_MouseWheel(object sender, MouseEventArgs e)
         {
-            Commands.MouseWheel(clientComp.clientSocket, e.Delta);
+            clientComp.SendMessage(new CommandMessage(NetworkCommands.MOUSE_WHEEL_ROTATED, e.Delta));
         }
 
     }

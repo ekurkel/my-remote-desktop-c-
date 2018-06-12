@@ -11,7 +11,7 @@ namespace Remote_Admin.Model
         private Socket sListener;
         // Объявляем делегат
         public delegate void RemoteComputersListChanged();
-        public event RemoteComputersListChanged RemoteComputersListHasChanged;
+        public event RemoteComputersListChanged RemoteComputersListChangedEvent;
 
         public Server()
         {
@@ -29,12 +29,12 @@ namespace Remote_Admin.Model
             sListener.Bind(ipEndPoint);
             sListener.Listen(30);
 
-            Thread RunThread = new Thread(Run);
-            RunThread.IsBackground = true;
-            RunThread.Start(); //запускаем поток
+            Thread WaitingConnectionsThread = new Thread(WaitingConnections);
+            WaitingConnectionsThread.IsBackground = true;
+            WaitingConnectionsThread.Start(); //запускаем поток
         }
 
-        private void Run()
+        private void WaitingConnections()
         {
             byte[] data = new byte[100];
 
@@ -45,14 +45,14 @@ namespace Remote_Admin.Model
                     // Программа приостанавливается, ожидая входящее соединение
                     Socket handler = sListener.Accept();
                     int iRx = handler.Receive(data);
-                    string comp = Commands.GetNameFromByte(data, iRx);
+                    string comp = CommandMessage.GetNameFromByte(data, iRx);
                     iRx = handler.Receive(data);
-                    string name = Commands.GetNameFromByte(data, iRx);
+                    string name = CommandMessage.GetNameFromByte(data, iRx);
                     iRx = handler.Receive(data);
-                    string ip = Commands.GetNameFromByte(data, iRx);
-                    RemoteComputers.Add(new RemoteComputer(comp, name, ip, handler));
+                    string ip = CommandMessage.GetNameFromByte(data, iRx);
+                    RemoteComputers.Add(new RemoteComputer(handler, comp, name, ip ));
 
-                    RemoteComputersListHasChanged();
+                    RemoteComputersListChangedEvent();
                 }
                 catch { }
             }
@@ -60,33 +60,25 @@ namespace Remote_Admin.Model
 
         private void RemoteComputerConnectionClose(RemoteComputer r)
         {
-            CloseConnections(RemoteComputers.IndexOf(r));
+            RemoteComputerConnectionClose(RemoteComputers.IndexOf(r));
         }
 
-        public void CloseConnections(int id)
+        public void RemoteComputerConnectionClose(int id)
         {
-            try
-            {
-                RemoteComputers[id].clientSocket.Send(new byte [] {100});
-                RemoteComputers[id].clientSocket.Shutdown(SocketShutdown.Both);
-                RemoteComputers[id].clientSocket.Close();
-                RemoteComputers.RemoveAt(id);
+            RemoteComputers[id].Delete();
+            RemoteComputers.RemoveAt(id);
 
-                
-            }
-            catch { }
-
-            RemoteComputersListHasChanged();
+            RemoteComputersListChangedEvent();
         }
 
         public void CloseAllConnections()
         {
             for (int i = 0; i < RemoteComputers.Count; i++)
             {
-                CloseConnections(i);
+                RemoteComputerConnectionClose(i);
             }
             RemoteComputers.Clear();
-            RemoteComputersListHasChanged();
+            RemoteComputersListChangedEvent();
 
         }
 

@@ -1,7 +1,12 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Net.Sockets;
+using System.Text;
 using System.Threading;
+using System.Windows.Forms;
 
 namespace Remote_Admin.Model
 {
@@ -11,7 +16,7 @@ namespace Remote_Admin.Model
         public string ClientIP { get; private set; }
         public string ComputerName { get; private set; }
         public Bitmap ComputerScreen { get; private set; }
-        public Socket clientSocket { get; private set; }
+        private Socket clientSocket;
 
 
         public delegate void RemoteComputerScreenDelegate();
@@ -19,7 +24,7 @@ namespace Remote_Admin.Model
         public event RemoteComputerScreenDelegate RemoteComputerScreenHasChangedEvent;
         public static event RemoteComputerConnectionDelegate RemoteComputerConnectionCloseEvent;
 
-        public RemoteComputer(string _computerName, string _computerUser, string _ip, Socket _clientSocket)
+        public RemoteComputer(Socket _clientSocket, string _computerName = "Unknown", string _computerUser = "Unknown", string _ip = "Unknown")
         {
             ComputerName = _computerName;
             ComputerUser = _computerUser;
@@ -60,6 +65,103 @@ namespace Remote_Admin.Model
                      
                 }
             }
+        }
+
+        public void Delete()
+        {
+            try
+            {
+                clientSocket.Send(new byte[] { 100 });
+                clientSocket.Shutdown(SocketShutdown.Both);
+                clientSocket.Close();
+            }
+            catch { }
+        }
+
+        public void SendMessage(CommandMessage m)
+        {
+            clientSocket.Send(m.GetBytes());
+        }
+
+        public void SendFile()
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                SendFile(ofd.FileName);
+            }
+        }
+
+        private static int countOfListener = 6999; // для сокета... 
+        public void SendFile(string fileName)
+        {
+            countOfListener--;
+            SendMessage( new CommandMessage(NetworkCommands.RECIVE_FILE, countOfListener));
+
+            //Создаем Listener на порт "countOfListener"
+            TcpListener Listener = new TcpListener(countOfListener);
+            //Начинаем прослушку
+            Listener.Start();
+            //и заведем заранее сокет
+            Socket SendSocket;
+
+            SendSocket = Listener.AcceptSocket();
+
+            StringBuilder FileName = new StringBuilder(fileName);
+            //Выделяем имя файла
+            int index = FileName.Length - 1;
+            while (FileName[index] != '\\' && FileName[index] != '/')
+            {
+                index--;
+            }
+            //Получаем имя файла
+            String resFileName = "";
+            for (int i = index + 1; i < FileName.Length; i++)
+                resFileName += FileName[i];
+            //Записываем в лист
+            List<Byte> First256Bytes = Encoding.Default.GetBytes(resFileName).ToList();
+            Int32 Diff = 256 - First256Bytes.Count;
+            //Остаток заполняем нулями
+            for (int i = 0; i < Diff; i++)
+                First256Bytes.Add(0);
+            //Начинаем отправку данных
+            Byte[] ReadedBytes = new Byte[256];
+            using (var FileStream = new FileStream(fileName, FileMode.Open))
+            {
+                using (var Reader = new BinaryReader(FileStream))
+                {
+                    Int32 CurrentReadedBytesCount;
+                    //Вначале отправим название файла
+                    SendSocket.Send(First256Bytes.ToArray());
+                    do
+                    {
+                        //Затем по частям - файл
+                        CurrentReadedBytesCount = Reader.Read(ReadedBytes, 0, ReadedBytes.Length);
+                        SendSocket.Send(ReadedBytes, CurrentReadedBytesCount, SocketFlags.None);
+                    }
+                    while (CurrentReadedBytesCount == ReadedBytes.Length);
+                }
+                //Завершаем передачу данных
+                SendSocket.Close();
+            }
+        }
+
+        public void RunFile(string fileName)
+        {
+            StringBuilder FileName = new StringBuilder(fileName);
+            //Выделяем имя файла
+            int index = FileName.Length - 1;
+            while (FileName[index] != '\\' && FileName[index] != '/')
+            {
+                index--;
+            }
+            //Получаем имя файла
+            String resFileName = "";
+            for (int i = index + 1; i < FileName.Length; i++)
+                resFileName += FileName[i];
+
+            SendMessage( new CommandMessage(NetworkCommands.RUN_FILE));
+            clientSocket.Send(Encoding.UTF8.GetBytes(resFileName));
         }
     }
 }
