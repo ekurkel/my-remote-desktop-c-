@@ -212,17 +212,33 @@ namespace Remote_Admin.Model
                 case NetworkCommands.RUN_FILE:
                     RunFile(commandBytes, length);
                     break;
+                case NetworkCommands.RUN_COMMAND_LINE:
+                    RunCommandLine();
+                    break;
             }
         }
 
-        private void RunFile(byte[] path, int _length)
+        private void RunCommandLine()
+        {
+            byte[] resCommand = new byte[500];
+            int count = sockClient.Receive(resCommand);
+            string comandLine = CommandMessage.GetNameFromByte(resCommand, count);
+            System.Diagnostics.Process.Start("cmd.exe", "/K " + comandLine);
+        }
+
+        private void RunFile(byte[] _path, int _length)
+        {
+            string resFilePath = GetStringFromMessage(_path, _length);
+            System.Diagnostics.Process.Start(resFilePath);
+        }
+
+        private string GetStringFromMessage(byte[] _path, int _length)
         {
             byte[] b = new byte[_length - 10];
             for (int i = 12; i < _length; i++)
-                b[i - 12] = path[i];
+                b[i - 12] = _path[i];
             string str = CommandMessage.GetNameFromByte(b, _length - 10);
-            string resFilePath = str.Substring(0, str.IndexOf('\0'));
-            System.Diagnostics.Process.Start(resFilePath);
+            return str.Substring(0, str.IndexOf('\0'));
         }
 
         private void ReceiveFile(int port)

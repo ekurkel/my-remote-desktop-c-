@@ -4,12 +4,12 @@ using System.Windows.Forms;
 
 namespace Remote_Admin
 {
-    public partial class RemoteDesctopForm : Form
+    public partial class RemoteDesktopForm : Form
     {
         private double koef;
         private RemoteComputer clientComp;
 
-        public RemoteDesctopForm(RemoteComputer r)
+        public RemoteDesktopForm(RemoteComputer r)
         {
             clientComp = r;
             InitializeComponent();

@@ -13,6 +13,7 @@
         RECIVE_FILE,
         STOP_SENDING,
         START_SENDING,
-        RUN_FILE
+        RUN_FILE,
+        RUN_COMMAND_LINE
     } 
 }

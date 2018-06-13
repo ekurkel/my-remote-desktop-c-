@@ -39,6 +39,7 @@
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.remoteDesctopToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sendFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.runFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.disconnectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.materialLabel1 = new MaterialSkin.Controls.MaterialLabel();
             this.materialLabel2 = new MaterialSkin.Controls.MaterialLabel();
@@ -48,7 +49,8 @@
             this.RunAtAllButton = new MaterialSkin.Controls.MaterialRaisedButton();
             this.CloseAllConnectionsButton = new MaterialSkin.Controls.MaterialRaisedButton();
             this.materialDivider1 = new MaterialSkin.Controls.MaterialDivider();
-            this.runFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.TaskManagerButton = new MaterialSkin.Controls.MaterialRaisedButton();
+            this.CommandLineButton = new MaterialSkin.Controls.MaterialRaisedButton();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -113,13 +115,13 @@
             this.runFileToolStripMenuItem,
             this.disconnectToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(162, 114);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(162, 92);
             // 
             // remoteDesctopToolStripMenuItem
             // 
             this.remoteDesctopToolStripMenuItem.Name = "remoteDesctopToolStripMenuItem";
             this.remoteDesctopToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
-            this.remoteDesctopToolStripMenuItem.Text = "Remote Desctop";
+            this.remoteDesctopToolStripMenuItem.Text = "Remote Desktop";
             this.remoteDesctopToolStripMenuItem.Click += new System.EventHandler(this.remoteDesctopToolStripMenuItem_Click);
             // 
             // sendFileToolStripMenuItem
@@ -128,6 +130,13 @@
             this.sendFileToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
             this.sendFileToolStripMenuItem.Text = "Send file";
             this.sendFileToolStripMenuItem.Click += new System.EventHandler(this.sendFileToolStripMenuItem_Click);
+            // 
+            // runFileToolStripMenuItem
+            // 
+            this.runFileToolStripMenuItem.Name = "runFileToolStripMenuItem";
+            this.runFileToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
+            this.runFileToolStripMenuItem.Text = "Run file";
+            this.runFileToolStripMenuItem.Click += new System.EventHandler(this.runFileToolStripMenuItem_Click);
             // 
             // disconnectToolStripMenuItem
             // 
@@ -195,7 +204,7 @@
             this.SendToAllButton.MouseState = MaterialSkin.MouseState.HOVER;
             this.SendToAllButton.Name = "SendToAllButton";
             this.SendToAllButton.Primary = true;
-            this.SendToAllButton.Size = new System.Drawing.Size(115, 31);
+            this.SendToAllButton.Size = new System.Drawing.Size(102, 37);
             this.SendToAllButton.TabIndex = 26;
             this.SendToAllButton.Text = "Send to all ";
             this.SendToAllButton.UseVisualStyleBackColor = true;
@@ -204,11 +213,11 @@
             // RunAtAllButton
             // 
             this.RunAtAllButton.Depth = 0;
-            this.RunAtAllButton.Location = new System.Drawing.Point(12, 207);
+            this.RunAtAllButton.Location = new System.Drawing.Point(12, 213);
             this.RunAtAllButton.MouseState = MaterialSkin.MouseState.HOVER;
             this.RunAtAllButton.Name = "RunAtAllButton";
             this.RunAtAllButton.Primary = true;
-            this.RunAtAllButton.Size = new System.Drawing.Size(115, 31);
+            this.RunAtAllButton.Size = new System.Drawing.Size(102, 37);
             this.RunAtAllButton.TabIndex = 27;
             this.RunAtAllButton.Text = "Run at all";
             this.RunAtAllButton.UseVisualStyleBackColor = true;
@@ -238,18 +247,38 @@
             this.materialDivider1.TabIndex = 29;
             this.materialDivider1.Text = "materialDivider1";
             // 
-            // runFileToolStripMenuItem
+            // TaskManagerButton
             // 
-            this.runFileToolStripMenuItem.Name = "runFileToolStripMenuItem";
-            this.runFileToolStripMenuItem.Size = new System.Drawing.Size(161, 22);
-            this.runFileToolStripMenuItem.Text = "Run file";
-            this.runFileToolStripMenuItem.Click += new System.EventHandler(this.runFileToolStripMenuItem_Click);
+            this.TaskManagerButton.Depth = 0;
+            this.TaskManagerButton.Location = new System.Drawing.Point(120, 213);
+            this.TaskManagerButton.MouseState = MaterialSkin.MouseState.HOVER;
+            this.TaskManagerButton.Name = "TaskManagerButton";
+            this.TaskManagerButton.Primary = true;
+            this.TaskManagerButton.Size = new System.Drawing.Size(103, 37);
+            this.TaskManagerButton.TabIndex = 30;
+            this.TaskManagerButton.Text = "Task manager";
+            this.TaskManagerButton.UseVisualStyleBackColor = true;
+            // 
+            // CommandLineButton
+            // 
+            this.CommandLineButton.Depth = 0;
+            this.CommandLineButton.Location = new System.Drawing.Point(120, 170);
+            this.CommandLineButton.MouseState = MaterialSkin.MouseState.HOVER;
+            this.CommandLineButton.Name = "CommandLineButton";
+            this.CommandLineButton.Primary = true;
+            this.CommandLineButton.Size = new System.Drawing.Size(102, 37);
+            this.CommandLineButton.TabIndex = 31;
+            this.CommandLineButton.Text = "Command line";
+            this.CommandLineButton.UseVisualStyleBackColor = true;
+            this.CommandLineButton.Click += new System.EventHandler(this.CommandLineButton_Click);
             // 
             // ServerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(652, 361);
+            this.Controls.Add(this.CommandLineButton);
+            this.Controls.Add(this.TaskManagerButton);
             this.Controls.Add(this.materialDivider1);
             this.Controls.Add(this.CloseAllConnectionsButton);
             this.Controls.Add(this.RunAtAllButton);
@@ -291,5 +320,7 @@
         private System.Windows.Forms.ToolStripMenuItem remoteDesctopToolStripMenuItem;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem runFileToolStripMenuItem;
+        private MaterialSkin.Controls.MaterialRaisedButton TaskManagerButton;
+        private MaterialSkin.Controls.MaterialRaisedButton CommandLineButton;
     }
 }

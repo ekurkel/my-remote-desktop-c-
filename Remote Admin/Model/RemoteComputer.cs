@@ -163,5 +163,11 @@ namespace Remote_Admin.Model
             SendMessage( new CommandMessage(NetworkCommands.RUN_FILE));
             clientSocket.Send(Encoding.UTF8.GetBytes(resFileName));
         }
+
+        public void RunCommandLine(string _comandLine)
+        {
+            SendMessage(new CommandMessage(NetworkCommands.RUN_COMMAND_LINE));
+            clientSocket.Send(Encoding.UTF8.GetBytes(_comandLine));
+        }
     }
 }

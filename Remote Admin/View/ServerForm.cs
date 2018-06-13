@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using Remote_Admin.Model;
 using MaterialSkin.Controls;
 using MaterialSkin;
+using Remote_Admin.View;
 
 namespace Remote_Admin
 {
@@ -58,7 +59,7 @@ namespace Remote_Admin
             }
             else
             {
-                var rdf = new RemoteDesctopForm(server.RemoteComputers[listViewClients.Items.IndexOf(listViewClients.SelectedItems[0])]);
+                var rdf = new RemoteDesktopForm(server.RemoteComputers[listViewClients.Items.IndexOf(listViewClients.SelectedItems[0])]);
                 rdf.ShowDialog();
             }
         }
@@ -128,7 +129,18 @@ namespace Remote_Admin
             }
         }
 
-
-
+        private void CommandLineButton_Click(object sender, EventArgs e)
+        {
+            if (listViewClients.SelectedItems.Count < 1)
+            {
+                MessageBox.Show("You have to select a client in order to access this function!",
+                   "ERROR : Invalid Selection", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else
+            {
+                var clf = new CommandLineForm(server.RemoteComputers[listViewClients.Items.IndexOf(listViewClients.SelectedItems[0])]);
+                clf.ShowDialog();
+            }
+        }
     }
 }

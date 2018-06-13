@@ -1,6 +1,6 @@
 ﻿namespace Remote_Admin
 {
-    partial class RemoteDesctopForm
+    partial class RemoteDesktopForm
     {
         /// <summary>
         /// Required designer variable.
@@ -46,14 +46,14 @@
             this.picScreen.MouseMove += new System.Windows.Forms.MouseEventHandler(this.picScreen_MouseMove);
             this.picScreen.MouseUp += new System.Windows.Forms.MouseEventHandler(this.picScreen_MouseUp);
             // 
-            // RemoteDesctopForm
+            // RemoteDesktopForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(634, 349);
             this.Controls.Add(this.picScreen);
-            this.Name = "RemoteDesctopForm";
-            this.Text = "RemoteDesctop";
+            this.Name = "RemoteDesktopForm";
+            this.Text = "RemoteDesktop";
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ServForm_KeyDown);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.ServForm_KeyUp);
             ((System.ComponentModel.ISupportInitialize)(this.picScreen)).EndInit();
