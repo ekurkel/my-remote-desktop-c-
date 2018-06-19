@@ -20,3 +20,4 @@ D:\HLAM\Projects\Remote Admin\Remote Admin\bin\Debug\Remote Admin.pdb
 D:\HLAM\Projects\Remote Admin\Remote Admin\bin\Debug\MaterialSkin.dll
 D:\HLAM\Projects\Remote Admin\Remote Admin\obj\Debug\Remote_Admin.RemoteDesktopForm.resources
 D:\HLAM\Projects\Remote Admin\Remote Admin\obj\Debug\Remote_Admin.View.CommandLineForm.resources
+D:\HLAM\Projects\Remote Admin\Remote Admin\obj\Debug\Remote_Admin.View.TaskManagerForm.resources

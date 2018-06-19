@@ -8,14 +8,16 @@ using System.Threading;
 using System.Windows.Forms;
 using System.Text;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography;
 
 namespace Remote_Admin.Model
 {
-    class Client
+    public class Client
     {
         private Socket sockClient;
         private Thread SendThread;
         private Thread ReceiveThread;
+        private AesCryptoServiceProvider AES;
         private int width;
         private int height;
         private string serverIp;
@@ -26,6 +28,7 @@ namespace Remote_Admin.Model
             serverIp = IP;
             if (LoadInfo()) // Загружаем данные и получаем размер экрана
             {
+                SendInformation();
                 ReceiveThread = new Thread(RunReceive);
                 ReceiveThread.Start(); //запускаем поток
                 ReceiveThread.Join();
@@ -54,8 +57,6 @@ namespace Remote_Admin.Model
                         if (tempSocket.Connected)
                         {
                             sockClient = tempSocket;
-                            ConnectToServer();
-                            //MessageBox.Show("The connection to the Server was successful!", "Server Connection Status", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             error = true;
                             serverIp = address.ToString();
                             break;
@@ -66,6 +67,8 @@ namespace Remote_Admin.Model
 
                 width = Screen.PrimaryScreen.Bounds.Width;
                 height = Screen.PrimaryScreen.Bounds.Height;
+
+                AES = new AesCryptoServiceProvider();
 
                 return error;
             }
@@ -126,19 +129,13 @@ namespace Remote_Admin.Model
 
         private void RunReceive()
         {
-            byte[] bytes = new byte[300];
+            byte[] bytes = new byte[500];
             while (true)
             {
                 try
-                {
-
+               { 
                     int length = sockClient.Receive(bytes);
-                    if (bytes[0] == 100)
-                    {
-                        StopSendingScreen();
-                        ReceiveThread.Abort();
-                    }
-                    ExecuteCommand(bytes, length, serverIp);
+                    ExecuteCommand(bytes, length);
                 }
                 catch (Exception)
                 {
@@ -149,13 +146,16 @@ namespace Remote_Admin.Model
             }
         }
 
-        private void ConnectToServer()
+        private void SendInformation()
         {
-            sockClient.Send(Encoding.ASCII.GetBytes(Environment.MachineName));
+            AES.Key = MessageEncrypt.GetKeyAES(sockClient);
+            sockClient.Receive(AES.IV);
+            
+            sockClient.Send(Encoding.UTF8.GetBytes(MessageEncrypt.AESEncrypt(Environment.MachineName, AES)));
             Thread.Sleep(30);
-            sockClient.Send(Encoding.UTF8.GetBytes(Environment.UserName));
+            sockClient.Send(Encoding.UTF8.GetBytes(MessageEncrypt.AESEncrypt(Environment.UserName, AES)));
             Thread.Sleep(30);
-            sockClient.Send(Encoding.ASCII.GetBytes(Dns.GetHostByName(Environment.MachineName).AddressList[0].ToString()));
+            sockClient.Send(Encoding.UTF8.GetBytes(MessageEncrypt.AESEncrypt(Dns.GetHostByName(Environment.MachineName).AddressList[0].ToString(), AES)));
         }
 
 
@@ -170,8 +170,9 @@ namespace Remote_Admin.Model
         private const int MOUSEEVENTF_RIGHTUP = 0x0010;
         private const int MOUSEEVENTF_ABSOLUTE = 0x8000;
 
-        private void ExecuteCommand(byte[] commandBytes, int length, string serverIP)
+        private void ExecuteCommand(byte[] commandBytes, int length)
         {
+            commandBytes = MessageEncrypt.AESDecrypt(commandBytes, AES);
             CommandMessage message = new CommandMessage(commandBytes);
 
             switch (message.CommandType)
@@ -198,7 +199,9 @@ namespace Remote_Admin.Model
                     keybd_event((byte)message.firstParam, (byte)message.secondParam, 1 | 2, (UIntPtr)0);
                     break;
                 case NetworkCommands.MOUSE_WHEEL_ROTATED:
-                    mouse_event(0x0800, 0, 0, unchecked((uint)message.firstParam), 0);
+                    if (message.firstParam < 0)
+                        mouse_event(0x0800, 0, 0, unchecked((uint)-150), 0);
+                    else mouse_event(0x0800, 0, 0, unchecked((uint)150), 0);
                     break;
                 case NetworkCommands.RECIVE_FILE:
                     ReceiveFile(message.firstParam);
@@ -214,6 +217,10 @@ namespace Remote_Admin.Model
                     break;
                 case NetworkCommands.RUN_COMMAND_LINE:
                     RunCommandLine();
+                    break;
+                case NetworkCommands.CLOSE_CONNECTION:
+                    StopSendingScreen();
+                    ReceiveThread.Abort();
                     break;
             }
         }

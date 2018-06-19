@@ -4,6 +4,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net.Sockets;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
@@ -17,19 +18,36 @@ namespace Remote_Admin.Model
         public string ComputerName { get; private set; }
         public Bitmap ComputerScreen { get; private set; }
         private Socket clientSocket;
-
+        private AesCryptoServiceProvider AES;
 
         public delegate void RemoteComputerScreenDelegate();
         public delegate void RemoteComputerConnectionDelegate(RemoteComputer r);
         public event RemoteComputerScreenDelegate RemoteComputerScreenHasChangedEvent;
         public static event RemoteComputerConnectionDelegate RemoteComputerConnectionCloseEvent;
 
-        public RemoteComputer(Socket _clientSocket, string _computerName = "Unknown", string _computerUser = "Unknown", string _ip = "Unknown")
+        public RemoteComputer(Socket _clientSocket)
         {
-            ComputerName = _computerName;
-            ComputerUser = _computerUser;
-            ClientIP = _ip;
             clientSocket = _clientSocket;
+            AES = new AesCryptoServiceProvider();
+            AES.GenerateKey();
+            AES.GenerateIV();
+
+            byte[] data = new byte[1000];
+
+            int lengthOfMessage = clientSocket.Receive(data);
+            MessageEncrypt.EncryptAndSendAESKey(clientSocket, data, AES, lengthOfMessage);
+
+            lengthOfMessage = clientSocket.Receive(data);
+            ComputerName = CommandMessage.GetNameFromByte(data, lengthOfMessage);
+            ComputerName = MessageEncrypt.AESDecrypt(ComputerName, AES);
+
+            lengthOfMessage = clientSocket.Receive(data);
+            ComputerUser = CommandMessage.GetNameFromByte(data, lengthOfMessage);
+            ComputerUser = MessageEncrypt.AESDecrypt(ComputerUser, AES);
+
+            lengthOfMessage = clientSocket.Receive(data);
+            ClientIP = CommandMessage.GetNameFromByte(data, lengthOfMessage);
+            ClientIP = MessageEncrypt.AESDecrypt(ClientIP, AES);
 
             Thread ReciveScreenImageThread = new Thread(ReciveScreenImage);
             ReciveScreenImageThread.IsBackground = true;
@@ -71,7 +89,7 @@ namespace Remote_Admin.Model
         {
             try
             {
-                clientSocket.Send(new byte[] { 100 });
+                SendMessage(new CommandMessage(NetworkCommands.CLOSE_CONNECTION));
                 clientSocket.Shutdown(SocketShutdown.Both);
                 clientSocket.Close();
             }
@@ -80,7 +98,7 @@ namespace Remote_Admin.Model
 
         public void SendMessage(CommandMessage m)
         {
-            clientSocket.Send(m.GetBytes());
+            clientSocket.Send(MessageEncrypt.AESEncrypt(m.GetBytes(), AES));
         }
 
         public void SendFile()

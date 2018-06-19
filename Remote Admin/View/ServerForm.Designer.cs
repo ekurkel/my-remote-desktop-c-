@@ -67,7 +67,8 @@
             // 
             // listViewClients
             // 
-            this.listViewClients.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.listViewClients.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.listViewClients.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.ClientID,
@@ -78,11 +79,11 @@
             this.listViewClients.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.listViewClients.FullRowSelect = true;
             this.listViewClients.GridLines = true;
-            this.listViewClients.Location = new System.Drawing.Point(237, 63);
+            this.listViewClients.Location = new System.Drawing.Point(237, 67);
             this.listViewClients.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.listViewClients.MultiSelect = false;
             this.listViewClients.Name = "listViewClients";
-            this.listViewClients.Size = new System.Drawing.Size(415, 298);
+            this.listViewClients.Size = new System.Drawing.Size(387, 388);
             this.listViewClients.TabIndex = 12;
             this.listViewClients.UseCompatibleStateImageBehavior = false;
             this.listViewClients.View = System.Windows.Forms.View.Details;
@@ -225,8 +226,9 @@
             // 
             // CloseAllConnectionsButton
             // 
+            this.CloseAllConnectionsButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.CloseAllConnectionsButton.Depth = 0;
-            this.CloseAllConnectionsButton.Location = new System.Drawing.Point(12, 310);
+            this.CloseAllConnectionsButton.Location = new System.Drawing.Point(12, 407);
             this.CloseAllConnectionsButton.MouseState = MaterialSkin.MouseState.HOVER;
             this.CloseAllConnectionsButton.Name = "CloseAllConnectionsButton";
             this.CloseAllConnectionsButton.Primary = true;
@@ -258,6 +260,7 @@
             this.TaskManagerButton.TabIndex = 30;
             this.TaskManagerButton.Text = "Task manager";
             this.TaskManagerButton.UseVisualStyleBackColor = true;
+            this.TaskManagerButton.Click += new System.EventHandler(this.TaskManagerButton_Click);
             // 
             // CommandLineButton
             // 
@@ -276,7 +279,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(652, 361);
+            this.ClientSize = new System.Drawing.Size(627, 458);
             this.Controls.Add(this.CommandLineButton);
             this.Controls.Add(this.TaskManagerButton);
             this.Controls.Add(this.materialDivider1);
@@ -291,6 +294,7 @@
             this.Controls.Add(this.listViewClients);
             this.Font = new System.Drawing.Font("Century Gothic", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.MinimumSize = new System.Drawing.Size(627, 390);
             this.Name = "ServerForm";
             this.Sizable = false;
             this.Text = "Remote Admin | Server";

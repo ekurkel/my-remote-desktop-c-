@@ -14,6 +14,7 @@
         STOP_SENDING,
         START_SENDING,
         RUN_FILE,
-        RUN_COMMAND_LINE
+        RUN_COMMAND_LINE,
+        CLOSE_CONNECTION
     } 
 }

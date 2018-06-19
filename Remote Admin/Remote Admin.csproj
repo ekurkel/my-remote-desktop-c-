@@ -56,10 +56,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Model\Client.cs" />
-    <Compile Include="MainWindow.cs">
+    <Compile Include="Model\MessageEncrypt.cs" />
+    <Compile Include="View\MainWindow.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainWindow.Designer.cs">
+    <Compile Include="View\MainWindow.Designer.cs">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="Model\CommandMessage.cs" />
@@ -86,7 +87,13 @@
     <Compile Include="View\ServerForm.Designer.cs">
       <DependentUpon>ServerForm.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="MainWindow.resx">
+    <Compile Include="View\TaskManagerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\TaskManagerForm.Designer.cs">
+      <DependentUpon>TaskManagerForm.cs</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="View\MainWindow.resx">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -107,6 +114,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="View\ServerForm.resx">
       <DependentUpon>ServerForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\TaskManagerForm.resx">
+      <DependentUpon>TaskManagerForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
     <None Include="packages.config" />

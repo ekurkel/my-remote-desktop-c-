@@ -36,22 +36,13 @@ namespace Remote_Admin.Model
 
         private void WaitingConnections()
         {
-            byte[] data = new byte[100];
-
             while (true)
             {
                 try
                 {
                     // Программа приостанавливается, ожидая входящее соединение
-                    Socket handler = sListener.Accept();
-                    int iRx = handler.Receive(data);
-                    string comp = CommandMessage.GetNameFromByte(data, iRx);
-                    iRx = handler.Receive(data);
-                    string name = CommandMessage.GetNameFromByte(data, iRx);
-                    iRx = handler.Receive(data);
-                    string ip = CommandMessage.GetNameFromByte(data, iRx);
-                    RemoteComputers.Add(new RemoteComputer(handler, comp, name, ip ));
-
+                    Socket handler = sListener.Accept();                   
+                    RemoteComputers.Add(new RemoteComputer(handler));
                     RemoteComputersListChangedEvent();
                 }
                 catch { }
@@ -65,8 +56,12 @@ namespace Remote_Admin.Model
 
         public void RemoteComputerConnectionClose(int id)
         {
-            RemoteComputers[id].Delete();
-            RemoteComputers.RemoveAt(id);
+            try
+            {
+                RemoteComputers[id].Delete();
+                RemoteComputers.RemoveAt(id);            
+            }
+            catch { }
 
             RemoteComputersListChangedEvent();
         }
@@ -82,7 +77,7 @@ namespace Remote_Admin.Model
 
         }
 
-        public void CloseCloseAllConnectionsAndExit()
+        public void CloseAllConnectionsAndExit()
         {
             CloseAllConnections();
             sListener.Dispose();

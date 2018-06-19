@@ -52,26 +52,18 @@ namespace Remote_Admin
 
         private void remoteDesctopToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (listViewClients.SelectedItems.Count < 1)
-            {
-                MessageBox.Show("You have to select a client in order to access this function!",
-                   "ERROR : Invalid Selection", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            else
+            if (isListViewSelectedItems())
             {
                 var rdf = new RemoteDesktopForm(server.RemoteComputers[listViewClients.Items.IndexOf(listViewClients.SelectedItems[0])]);
+                this.Hide();
                 rdf.ShowDialog();
+                this.Show();
             }
         }
 
         private void sendFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (listViewClients.SelectedItems.Count < 1)
-            {
-                MessageBox.Show("You have to select a client in order to access this function!",
-                    "ERROR : Invalid Selection", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            else
+            if (isListViewSelectedItems())
             {
                 try
                 {
@@ -83,15 +75,8 @@ namespace Remote_Admin
 
         private void disconnectToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (listViewClients.SelectedItems.Count < 1)
-            {
-                MessageBox.Show("You have to select a client in order to access this function!",
-                    "ERROR : Invalid Selection", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            else
-            {
+            if (isListViewSelectedItems())
                 server.RemoteComputerConnectionClose(listViewClients.FocusedItem.Index);
-            }
         }
 
         private void SendToAllButton_Click(object sender, EventArgs e)
@@ -131,16 +116,37 @@ namespace Remote_Admin
 
         private void CommandLineButton_Click(object sender, EventArgs e)
         {
-            if (listViewClients.SelectedItems.Count < 1)
-            {
-                MessageBox.Show("You have to select a client in order to access this function!",
-                   "ERROR : Invalid Selection", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            else
+            if (isListViewSelectedItems())
             {
                 var clf = new CommandLineForm(server.RemoteComputers[listViewClients.Items.IndexOf(listViewClients.SelectedItems[0])]);
                 clf.ShowDialog();
             }
+        }
+
+        private void TaskManagerButton_Click(object sender, EventArgs e)
+        {
+            if (isListViewSelectedItems())
+            {
+                var tmf = new TaskManagerForm(server.RemoteComputers[listViewClients.Items.IndexOf(listViewClients.SelectedItems[0])]);
+                tmf.ShowDialog();
+            }
+
+        }
+
+        private void Server_FormClosing(Object sender, FormClosingEventArgs e)
+        {
+            server.CloseAllConnectionsAndExit();
+        }
+
+        private bool isListViewSelectedItems()
+        {
+            if (listViewClients.SelectedItems.Count < 1)
+            {
+                MessageBox.Show("You have to select a client in order to access this function!",
+                   "ERROR : Invalid Selection", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+            return true;
         }
     }
 }
